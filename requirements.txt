@@ -1,5 +1,4 @@
 streamlit
-pandas
-plotly
-pyarrow
-Pillow
+opencv-python-headless
+pillow
+pyotp
