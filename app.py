@@ -7,18 +7,14 @@ import sys
 from urllib.parse import urlparse, parse_qs
 from google.protobuf.message import DecodeError
 
-# ==============================================================================
-# 💡 [경로 오류 해결] app.py가 위치한 절대 경로를 시스템 경로에 강제로 주입합니다.
-# 이 코드가 있어야 Streamlit Cloud 환경에서 옆에 있는 migration_pb2.py를 정상 인식합니다.
-# ==============================================================================
+
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 if CURRENT_DIR not in sys.path:
     sys.path.insert(0, CURRENT_DIR)
 sys.path.append(CURRENT_DIR)
 
-# 원본 프로젝트와 100% 동일한 구글 OTP 프로토콜 버퍼 모듈 임포트
+
 import migration_pb2 as pb2
-# ==============================================================================
 
 # 페이지 기본 설정
 st.set_page_config(page_title="내부망 OTP 키 추출기", page_icon="🔐", layout="centered")
@@ -62,7 +58,7 @@ if uploaded_file is not None:
                 # [방식 A] Google OTP Export QR (원본 프로젝트 정밀 로직)
                 # =====================================================
                 if "otpauth-migration://" in qr_data:
-                    st.info("Google OTP 내보내기용 대형 QR 코드가 감지되었습니다.")
+                    st.info("Google OTP 내보내기용 QR 코드가 감지되었습니다.")
                     try:
                         parsed = urlparse(qr_data)
                         data = parse_qs(parsed.query)["data"][0]
@@ -76,7 +72,7 @@ if uploaded_file is not None:
                         if not payload.otp_parameters:
                             st.error("내부 프로토콜 버퍼에 OTP 데이터가 존재하지 않습니다.")
                         else:
-                            st.success("✅ 구글 내보내기 데이터 정밀 해독 성공!")
+                            st.success("✅ 시크릿 키 추출 성공!")
                             st.write("아래의 키를 복사하여 내부망 PC 프로그램에 직접 입력하세요:")
                             
                             # 내부에 묶여 있는 다중 계정을 원본 규칙대로 순회 및 Base32 변환
