@@ -2,4 +2,4 @@ streamlit
 opencv-python-headless
 pillow
 pyotp
-protobuf==5.29.0
+protobuf
